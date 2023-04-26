@@ -42,6 +42,12 @@ Options:
   -v | --version   print version
   -h | --help      show this help message
 
+It also supports some options for backward compatibility with other
+programs (such as `-rS` for light) so that it can act as a partial
+drop-in replacement, though they are not openly encouraged as they
+may be removed in future versions and therefore support is not
+granted.
+
 Examples:
   # set maximum brightness
   set-light -M
