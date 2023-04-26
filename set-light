@@ -25,7 +25,8 @@ separate command line arguments into multiple options.
 
 Returns current brightness if called with no arguments.
 
--m               set maximum value
+-m               set minimum value
+-M               set maximum value
 -d[r|a] VALUE    decrease by VALUE
 -u[r|a] VALUE    increase by VALUE
 -[s][r|a] VALUE  set VALUE (default option)
@@ -35,7 +36,7 @@ Returns current brightness if called with no arguments.
 Examples:
 
 # set maximum brightness
-set-light -m
+set-light -M
 # decrease brightness by 15
 set-light -d 15
 # increase brightness by 5%
@@ -58,7 +59,8 @@ abs_step="$res"
 
 case $1 in
   "") echo "$cur_brightness"; exit;;
-  -m) b="$max_brightness";;
+  -m) b="0";;
+  -M) b="$max_brightness";;
   -dr|-rd|-U) b=$(( cur_brightness - abs_step ));;
   -ur|-ru|-A) b=$(( cur_brightness + abs_step ));;
   -d|-da|-ad) b=$(( cur_brightness - step ));;

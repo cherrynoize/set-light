@@ -32,7 +32,8 @@ file. Useful variables can be found at the top of the script.
 
     Returns current brightness if called with no arguments.
 
-    -m               set maximum value
+    -m               set minimum value
+    -M               set maximum value
     -d[r|a] VALUE    decrease by VALUE
     -u[r|a] VALUE    increase by VALUE
     -[s][r|a] VALUE  set VALUE (default option)
@@ -42,10 +43,35 @@ file. Useful variables can be found at the top of the script.
     Examples:
 
     # set maximum brightness
-    set-light -m
+    set-light -M
     # decrease brightness by 15
     set-light -d 15
     # increase brightness by 5%
     set-light -ur 5
     # set brightness to half
     set-light -r 50
+
+## WM integration
+
+### awesome
+
+If you want a backlight widget for awesome that also supports
+set-light check out [Ctrl](https://github.com/cherrynoize/ctrl).
+
+### sxhkd
+
+sxhkd keybindings for bspwm or any other wm for that matter.
+
+    # brightness set value
+    super + u; {0-9}; l
+        set-light -r {0-9}
+    super + u; {0-9}; {0-9}; l
+        set-light -r {0-9}{0-9}
+
+    # brightness down/up
+    XF86MonBrightness{Down,Up}
+        set-light -{dr,ur} 7
+
+    # brightness min/max
+    super + XF86MonBrightness{Down,Up}
+        set-light -{m,M}
