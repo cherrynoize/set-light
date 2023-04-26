@@ -12,6 +12,12 @@ absolute brightness values.
     cd set-light
     chmod +x set-light
     cp set-light /usr/local/bin/
+    cp 10-set-light-backlight.rules /usr/lib/udev/rules.d/
+    gpasswd -a $USER video
+
+The udev rules set the group for the brightness file to `video`.
+We then add ourselves to the same group so we can write to the file
+without root privileges.
 
 ## Configuration
 
