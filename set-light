@@ -76,5 +76,5 @@ esac
 if [ "$b" -lt "$min" ]; then b=0; fi
 if [ "$b" -gt "$max" ]; then b="$max_brightness"; fi
 
-backlight_dev="${backlight_dir}$(ls "${backlight_dir}" | head -n 1)"
+backlight_dev="${backlight_dir}/$(ls "${backlight_dir}" | head -n 1)"
 echo "${b}" > "${backlight_dev}/${brightness_file}"
