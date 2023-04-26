@@ -1,0 +1,78 @@
+#!/bin/sh
+
+backlight_dir="/sys/class/backlight"
+brightness_file="brightness"
+max_brightness_file="max_brightness"
+
+cur_brightness=$(cat ${backlight_dir}/*/${brightness_file})
+max_brightness=$(cat ${backlight_dir}/*/${max_brightness_file})
+
+min=5
+max="$max_brightness"
+step=10
+
+if [ -n "$2" ]; then step=$2; fi
+
+usage () {
+  echo """set-light [OPTION] [VALUE]
+
+Sets backlight brightness value. Add `r` to use percentage
+(relative) values rather than absolute. `a` means absolute
+and is the default value.
+
+set-light only supports a single option before VALUE. Do not
+separate command line arguments into multiple options.
+
+Returns current brightness if called with no arguments.
+
+-m               set maximum value
+-d[r|a] VALUE    decrease by VALUE
+-u[r|a] VALUE    increase by VALUE
+-[s][r|a] VALUE  set VALUE (default option)
+-v | --version   print version
+-h | --help      show this help message
+
+Examples:
+
+# set maximum brightness
+set-light -m
+# decrease brightness by 15
+set-light -d 15
+# increase brightness by 5%
+set-light -ur 5
+# set brightness to half
+set-light -r 50"""
+}
+
+version () {
+  echo "light replacement by cherrynoize"
+  echo "set-light | version 0.0.1"
+}
+
+parse_perc () {
+  res=$(( $1 *  "$max_brightness" / 100 ));
+}
+
+parse_perc "$step"
+abs_step="$res"
+
+case $1 in
+  "") echo "$cur_brightness"; exit;;
+  -m) b="$max_brightness";;
+  -dr|-rd|-U) b=$(( cur_brightness - abs_step ));;
+  -ur|-ru|-A) b=$(( cur_brightness + abs_step ));;
+  -d|-da|-ad) b=$(( cur_brightness - step ));;
+  -u|-ua|-au) b=$(( cur_brightness + step ));;
+  -r|-sr|-rs|-S) parse_perc "$2"; b="$res";;
+  -a|-s|-sa|-as|-rS) b="$2";;
+  -v|--version) version; exit;;
+  -h|--help) usage; exit;;
+  -*) echo "error: invalid argument: ${1}"; exit 1;;
+  *) b="$1";;
+esac
+
+if [ "$b" -lt "$min" ]; then b=0; fi
+if [ "$b" -gt "$max" ]; then b="$max_brightness"; fi
+
+backlight_dev="${backlight_dir}$(ls "${backlight_dir}" | head -n 1)"
+echo "${b}" > "${backlight_dev}/${brightness_file}"
