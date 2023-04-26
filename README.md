@@ -21,35 +21,37 @@ file. Useful variables can be found at the top of the script.
 
 ## Usage
 
-    set-light [OPTION] [VALUE]
+    Usage:
+      set-light [OPTION] [VALUE]
 
-    Sets backlight brightness value. Add `r` to use percentage
-    (relative) values rather than absolute. `a` means absolute
-    and is the default value.
+    Description:
+      Sets backlight brightness value. Add \`r\` to use percentage
+      (relative) values rather than absolute. \`a\` means absolute
+      and is the default value.
 
-    set-light only supports a single option before VALUE. Do not
-    separate command line arguments into multiple options.
+      set-light only supports a single option before VALUE. Do not
+      separate command line arguments into multiple options.
 
-    Returns current brightness if called with no arguments.
+      Returns current brightness if called with no arguments.
 
-    -m               set minimum value
-    -M               set maximum value
-    -d[r|a] VALUE    decrease by VALUE
-    -u[r|a] VALUE    increase by VALUE
-    -[s][r|a] VALUE  set VALUE (default option)
-    -v | --version   print version
-    -h | --help      show this help message
+    Options:
+      -m               set minimum value
+      -M               set maximum value
+      -d[r|a] VALUE    decrease by VALUE
+      -u[r|a] VALUE    increase by VALUE
+      -[s][r|a] VALUE  set VALUE (default option)
+      -v | --version   print version
+      -h | --help      show this help message
 
     Examples:
-
-    # set maximum brightness
-    set-light -M
-    # decrease brightness by 15
-    set-light -d 15
-    # increase brightness by 5%
-    set-light -ur 5
-    # set brightness to half
-    set-light -r 50
+      # set maximum brightness
+      set-light -M
+      # decrease brightness by 15
+      set-light -d 15
+      # increase brightness by 5%
+      set-light -ur 5
+      # set brightness to half
+      set-light -r 50
 
 ## WM integration
 
