@@ -31,7 +31,7 @@ Description:
   set-light only supports a single option before VALUE. Do not
   separate command line arguments into multiple options.
 
-  Returns current brightness if called with no arguments.
+  Returns current brightness if called with no value argument.
 
 Options:
   -m               set minimum value
@@ -49,6 +49,8 @@ may be removed in future versions and therefore support is not
 granted.
 
 Examples:
+  # get current backlight percentage
+  set-light -r
   # set maximum brightness
   set-light -M
   # decrease brightness by 15
@@ -60,11 +62,16 @@ Examples:
 }
 
 version () {
-  echo "set-light | version 0.0.1"
+  echo "set-light | version 0.0.2"
 }
 
 parse_perc () {
-  res=$(( $1 *  "$max_brightness" / 100 ));
+  if [ -n "$1" ]; then
+    res="$(( $1 *  "$max_brightness" / 100 ))"
+  else # with no additional argument
+    echo "$(( "$cur_brightness" * 100 / "$max_brightness" ))"
+    exit
+  fi
 }
 
 parse_perc "$step"
@@ -78,7 +85,7 @@ case $1 in
   -ur|-ru|-A) b=$(( cur_brightness + abs_step ));;
   -d|-da|-ad) b=$(( cur_brightness - step ));;
   -u|-ua|-au) b=$(( cur_brightness + step ));;
-  -r|-sr|-rs|-S) parse_perc "$2"; b="$res";;
+  -r|-sr|-rs|-S|-p) parse_perc "$2"; b="$res";;
   -a|-s|-sa|-as|-rS) b="$2";;
   -v|--version) version; exit;;
   -h|--help) usage; exit;;

@@ -38,7 +38,7 @@ file. Useful variables can be found at the top of the script.
       set-light only supports a single option before VALUE. Do not
       separate command line arguments into multiple options.
 
-      Returns current brightness if called with no arguments.
+      Returns current brightness if called with no value argument.
 
     Options:
       -m               set minimum value
@@ -50,6 +50,8 @@ file. Useful variables can be found at the top of the script.
       -h | --help      show this help message
 
     Examples:
+      # get current backlight percentage
+      set-light -r
       # set maximum brightness
       set-light -M
       # decrease brightness by 15
@@ -83,3 +85,9 @@ sxhkd keybindings for bspwm or any other wm for that matter.
     # brightness min/max
     super + XF86MonBrightness{Down,Up}
         set-light -{m,M}
+
+## Contribution
+
+Please do consider opening a pull request or reaching out to me at
+[cherrynoize@duck.com](mailto:cherrynoize@duck.com) for any bugs or
+whatever.
