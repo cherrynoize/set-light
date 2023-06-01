@@ -49,16 +49,16 @@ may be removed in future versions and therefore support is not
 granted.
 
 Examples:
-  # get current backlight percentage
   set-light -r
-  # set maximum brightness
+   get current backlight percentage
   set-light -M
-  # decrease brightness by 15
+   set maximum brightness
   set-light -d 15
-  # increase brightness by 5%
+   decrease brightness by 15
   set-light -ur 5
-  # set brightness to half
-  set-light -r 50"""
+   increase brightness by 5%
+  set-light -r 50
+   set brightness to half"""
 }
 
 version () {
