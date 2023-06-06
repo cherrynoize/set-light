@@ -10,18 +10,15 @@ absolute brightness values.
 
     git clone https://github.com/cherrynoize/set-light
     cd set-light
-    chmod +x set-light
-    cp set-light /usr/local/bin/
-    cp 10-set-light-backlight.rules /usr/lib/udev/rules.d/
-    gpasswd -a $USER video
+	  make PREFIX="/usr/local/" install
 
 The udev rules set the group for the brightness file to `video`.
-We then add ourselves to the same group so we can write to the file
+The makefile adds us to the same group so we can write to the file
 without root privileges.
 
 ## Configuration
 
-You can easily edit the default step for brightness change, the
+You can edit the default step for brightness change, the
 threshold values and path to the backlight device in the source
 file. Useful variables can be found at the top of the script.
 
