@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Minimal backlight manager written in shell
+# Minimal backlight manager shell script
 #
 # https://github.com/cherrynoize/set-light
 # Author: cherrynoize
@@ -10,22 +10,22 @@ backlight_dir="/sys/class/backlight"
 brightness_file="brightness"
 max_brightness_file="max_brightness"
 
-cur_brightness=$(cat ${backlight_dir}/*/${brightness_file})
-max_brightness=$(cat ${backlight_dir}/*/${max_brightness_file})
+cur_brightness="$(cat ${backlight_dir}/*/${brightness_file})"
+max_brightness="$(cat ${backlight_dir}/*/${max_brightness_file})"
 
 min=5
 max="$max_brightness"
 step=10
 
-if [ -n "$2" ]; then step=$2; fi
+[ -n "$2" ] && step=$2
 
 usage () {
-  echo """Usage:
-  set-light [OPTION] [VALUE]
+cat<<EOF
+Usage: set-light [OPTION] [VALUE]
 
 Description:
-  Sets backlight brightness value. Add \`r\` to use percentage
-  (relative) values rather than absolute. \`a\` means absolute
+  Sets backlight brightness value. Add '-r' to use percentage
+  (relative) values rather than absolute. '-a' means absolute
   and is the default value.
 
   set-light only supports a single option before VALUE. Do not
@@ -43,7 +43,7 @@ Options:
   -h | --help      show this help message
 
 It also supports some options for backward compatibility with other
-programs (such as `-rS` for light) so that it can act as a partial
+programs (such as '-rS' for light) so that it can act as a partial
 drop-in replacement, though they are not openly encouraged as they
 may be removed in future versions and therefore support is not
 granted.
@@ -59,6 +59,7 @@ Examples:
    increase brightness by 5%
   set-light -r 50
    set brightness to half"""
+EOF
 }
 
 version () {
@@ -67,9 +68,9 @@ version () {
 
 parse_perc () {
   if [ -n "$1" ]; then
-    res="$(( $1 *  "$max_brightness" / 100 ))"
+    res="$(( $1 *  max_brightness / 100 ))"
   else # with no additional argument
-    echo "$(( "$cur_brightness" * 100 / "$max_brightness" ))"
+    echo "$(( cur_brightness * 100 / max_brightness ))"
     exit
   fi
 }
@@ -77,24 +78,24 @@ parse_perc () {
 parse_perc "$step"
 abs_step="$res"
 
-case $1 in
-  "") echo "$cur_brightness"; exit;;
-  -m) b="0";;
-  -M) b="$max_brightness";;
-  -dr|-rd|-U) b=$(( cur_brightness - abs_step ));;
-  -ur|-ru|-A) b=$(( cur_brightness + abs_step ));;
-  -d|-da|-ad) b=$(( cur_brightness - step ));;
-  -u|-ua|-au) b=$(( cur_brightness + step ));;
-  -r|-sr|-rs|-S|-p) parse_perc "$2"; b="$res";;
-  -a|-s|-sa|-as|-rS) b="$2";;
-  -v|--version) version; exit;;
-  -h|--help) usage; exit;;
-  -*) echo "error: invalid argument: ${1}"; exit 1;;
-  *) b="$1";;
+case "$1" in
+  "") echo "$cur_brightness"; exit ;;
+  -m) b="0" ;;
+  -M) b="$max_brightness" ;;
+  -dr|-rd|-U) b=$(( cur_brightness - abs_step )) ;;
+  -ur|-ru|-A) b=$(( cur_brightness + abs_step )) ;;
+  -d|-da|-ad) b=$(( cur_brightness - step )) ;;
+  -u|-ua|-au) b=$(( cur_brightness + step )) ;;
+  -r|-sr|-rs|-S|-p) parse_perc "$2"; b="$res" ;;
+  -a|-s|-sa|-as|-rS) b="$2" ;;
+  -v|--version) version; exit ;;
+  -h|--help) usage; exit ;;
+  -*) echo "error: invalid argument: ${1}"; exit 1 ;;
+  *) b="$1" ;;
 esac
 
-if [ "$b" -lt "$min" ]; then b=0; fi
-if [ "$b" -gt "$max" ]; then b="$max_brightness"; fi
+[ "$b" -lt "$min" ] && b=0
+[ "$b" -gt "$max" ] && b="$max_brightness"
 
-backlight_dev="${backlight_dir}/$(ls "${backlight_dir}" | head -n 1)"
-echo "${b}" > "${backlight_dev}/${brightness_file}"
+backlight_dev="$backlight_dir/$(ls "${backlight_dir}" | head -n 1)"
+echo "${b}" > "$backlight_dev/$brightness_file"
