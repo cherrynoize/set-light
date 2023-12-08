@@ -15,7 +15,12 @@ absolute brightness values.
 The makefile adds us to the `video` group so we can write to the
 file without root privileges. It also runs the
 `[set-backlight-rules.sh](set-backlight-rules.sh)` script to set
-the same group for the backlight and leds brightness files.
+the group and permissions for the backlight and leds brightness files.
+
+I've removed the `udev` rules which caused the `chgrp` and `chmod`
+commands to be triggered randomly many times and clutter the
+journal as well. This means that if you add a different backlight
+or leds device you may have to run the script again.
 
 ## Configuration
 
