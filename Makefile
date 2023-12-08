@@ -5,10 +5,9 @@ install:
 	chmod +x '$(FILENAME)'
 	mkdir -p '$(DESTDIR)$(PREFIX)/bin'
 	cp '$(FILENAME)' '$(DESTDIR)$(PREFIX)/bin/$(FILENAME)'
-	cp '10-$(FILENAME)-backlight.rules' '/usr/lib/udev/rules.d/'
-	gpasswd -a "${USER}" video
+	./set-backlight-rules.sh
+	gpasswd -a "$USER" video
 
 .PHONY: uninstall
 uninstall:
 	rm -f '$(DESTDIR)$(PREFIX)/bin/$(FILENAME)'
-	rm -f '10-$(FILENAME)-backlight.rules'

@@ -10,11 +10,12 @@ absolute brightness values.
 
     git clone https://github.com/cherrynoize/set-light
     cd set-light
-	  make PREFIX="/usr/local/" install
+    make PREFIX="/usr/local/" install
 
-The udev rules set the group for the brightness file to `video`.
-The makefile adds us to the same group so we can write to the file
-without root privileges.
+The makefile adds us to the `video` group so we can write to the
+file without root privileges. It also runs the
+`[set-backlight-rules.sh](set-backlight-rules.sh)` script to set
+the same group for the backlight and leds brightness files.
 
 ## Configuration
 
