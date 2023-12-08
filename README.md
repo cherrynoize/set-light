@@ -10,7 +10,7 @@ absolute brightness values.
 
     git clone https://github.com/cherrynoize/set-light
     cd set-light
-    make PREFIX="/usr/local/" install
+    sudo make PREFIX="/usr/local/" install
 
 The makefile adds us to the `video` group so we can write to the
 file without root privileges. It also runs the
