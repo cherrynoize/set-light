@@ -19,6 +19,17 @@ step=10
 
 [ -n "$2" ] && step=$2
 
+# Give video members permission to edit brightness settings
+set_rules () {
+  # Backlight
+  chgrp video /sys/class/backlight/*/brightness
+  chmod g+w /sys/class/backlight/*/brightness
+
+  # Leds
+  chgrp video /sys/class/leds/*/brightness
+  chmod g+w /sys/class/leds/*/brightness
+}
+
 usage () {
 cat<<EOF
 Usage: set-light [OPTION] [VALUE]
@@ -88,6 +99,7 @@ case "$1" in
   -u|-ua|-au) b=$(( cur_brightness + step )) ;;
   -r|-sr|-rs|-S|-p) parse_perc "$2"; b="$res" ;;
   -a|-s|-sa|-as|-rS) b="$2" ;;
+  -R|--rules) set_rules; exit ;;
   -v|--version) version; exit ;;
   -h|--help) usage; exit ;;
   -*) echo "error: invalid argument: ${1}"; exit 1 ;;

@@ -10,17 +10,21 @@ absolute brightness values.
 
     git clone https://github.com/cherrynoize/set-light
     cd set-light
-    sudo make PREFIX="/usr/local/" install
+    make install
 
 The makefile adds us to the `video` group so we can write to the
-file without root privileges. It also runs the
-`[set-backlight-rules.sh](set-backlight-rules.sh)` script to set
-the group and permissions for the backlight and leds brightness files.
+file without root privileges. It also creates, enables and starts
+the `[set-brightness-rules.service](set-brightness-rules.service)`
+`systemd` service to set the group and permissions for the
+backlight and leds brightness files.
 
-I've removed the `udev` rules which caused the `chgrp` and `chmod`
-commands to be triggered randomly many times and clutter the
-journal as well. This means that if you add a different backlight
-or leds device you may have to run the script again.
+This substitutes the `udev` rules which caused the `chgrp` and
+`chmod` commands to be triggered randomly many times and clutter
+the journal as well.
+
+>Do not run `make install` as `root` or it will not add the
+correct user to the group. `sudo` is used in the makefile
+instead.
 
 ## Configuration
 
