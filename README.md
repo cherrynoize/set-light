@@ -95,6 +95,4 @@ sxhkd keybindings for bspwm or any other wm for that matter.
 
 ## Contribution
 
-Please do consider opening a pull request or reaching out to me at
-[cherrynoize@duck.com](mailto:cherrynoize@duck.com) for any bugs or
-whatever.
+Please open a PR or an issue for any bugs or whatever.
