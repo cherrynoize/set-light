@@ -13,9 +13,9 @@ max_brightness_file="max_brightness"
 cur_brightness="$(cat ${backlight_dir}/*/${brightness_file})"
 max_brightness="$(cat ${backlight_dir}/*/${max_brightness_file})"
 
-min=5
+min=3
 max="$max_brightness"
-step=10
+step=5
 
 [ -n "$2" ] && step=$2
 
