@@ -46,8 +46,8 @@ Description:
   Returns current brightness if called with no value argument.
 
 Options:
-  -m               set minimum value
-  -M               set maximum value
+  -m               set to minimum value
+  -M               set to maximum value
   -d[r|a] VALUE    decrease by VALUE
   -u[r|a] VALUE    increase by VALUE
   -[s][r|a] VALUE  set VALUE (default option)
@@ -62,7 +62,7 @@ Examples:
   set-light -r
    get current backlight percentage
   set-light -M
-   set maximum brightness
+   set to max brightness
   set-light -d 15
    decrease brightness by 15
   set-light -ur 5
