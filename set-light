@@ -13,11 +13,12 @@ max_brightness_file="max_brightness"
 cur_brightness="$(cat ${backlight_dir}/*/${brightness_file})"
 max_brightness="$(cat ${backlight_dir}/*/${max_brightness_file})"
 
-min=3
+min=1
 max="$max_brightness"
 step=5
+soft_zone=10
 
-[ -n "$2" ] && step=$2
+[ -n "$2" ] && step="$2"
 
 # Give video members permission to edit brightness settings
 set_rules () {
@@ -55,9 +56,7 @@ Options:
 
 It also supports some options for backward compatibility with other
 programs (such as '-rS' for light) so that it can act as a partial
-drop-in replacement, though they are not openly encouraged as they
-may be removed in future versions and therefore support is not
-granted.
+drop-in replacement.
 
 Examples:
   set-light -r
@@ -74,7 +73,7 @@ EOF
 }
 
 version () {
-  echo "set-light | version 0.0.2"
+  echo "set-light | version 0.0.3"
 }
 
 parse_perc () {
@@ -88,6 +87,11 @@ parse_perc () {
 
 parse_perc "$step"
 abs_step="$res"
+
+if [ "$cur_brightness" -lt "$soft_zone" ] || [ "$cur_brightness" -gt "$((max_brightness - soft_zone))" ]; then
+  step=$((step/2))
+  abs_step=$((abs_step/2))
+fi
 
 case "$1" in
   "") echo "$cur_brightness"; exit ;;
@@ -106,8 +110,8 @@ case "$1" in
   *) b="$1" ;;
 esac
 
-[ "$b" -lt "$min" ] && b=0
+[ "$b" -lt "$min" ] && [ "$b" -lt "$cur_brightness" ] && b=0
 [ "$b" -gt "$max" ] && b="$max_brightness"
 
 backlight_dev="$backlight_dir/$(ls "${backlight_dir}" | head -n 1)"
-echo "${b}" > "$backlight_dev/$brightness_file"
+echo "$b" > "$backlight_dev/$brightness_file"
